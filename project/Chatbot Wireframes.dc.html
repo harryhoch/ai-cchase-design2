@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#f0eee9;font-family:system-ui,sans-serif}
+.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#1a1a1a}
+.dv-opts{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)}
+.dv-card{max-width:100%;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.06);overflow:hidden}
+.dv-opt:target .dv-oid{background:#2a78d6;color:#fff}
+.dv-next{margin:22px 0 0;font:12px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.5)}
+.wf{--a:oklch(.6 .16 42);font-family:'Patrick Hand',cursive;color:#1c1c1c;box-sizing:border-box}
+.wf *{box-sizing:border-box}
+.frm{border:1.5px solid #2a2a2a;border-radius:5px;background:#fff;overflow:hidden;display:flex;flex-direction:column}
+.bar{flex:none;height:24px;border-bottom:1.5px solid #2a2a2a;display:flex;align-items:center;gap:6px;padding:0 8px;background:#faf9f7;font:10.5px ui-monospace,Menlo,monospace;color:#777}
+.dot{width:6px;height:6px;border-radius:50%;border:1px solid #aaa;flex:none}
+.ln{height:6px;border-radius:4px;background:rgba(0,0,0,.15);flex:none}
+.lbl{font:9.5px ui-monospace,Menlo,monospace;letter-spacing:.06em;color:rgba(0,0,0,.45);text-transform:uppercase}
+.mono{font:10px ui-monospace,Menlo,monospace;color:rgba(0,0,0,.5)}
+.h{font:15px 'Patrick Hand',cursive;color:#1c1c1c}
+.card{border:1.5px solid #2a2a2a;border-radius:4px;background:#fff;padding:6px 7px;display:flex;gap:7px}
+.grip{font:11px/1.1 ui-monospace,monospace;color:rgba(0,0,0,.4);letter-spacing:-2px;flex:none}
+.chip{display:inline-flex;align-items:center;justify-content:center;min-width:15px;height:15px;padding:0 3px;border-radius:3px;border:1.5px solid var(--a);color:var(--a);font:9.5px ui-monospace,monospace;flex:none}
+.btn{border:1.5px solid #2a2a2a;border-radius:3px;padding:2px 8px;font:13px 'Patrick Hand',cursive;background:#fff;flex:none}
+.hatch{background-image:repeating-linear-gradient(135deg,rgba(0,0,0,.11) 0 2px,transparent 2px 7px);border:1.5px dashed rgba(0,0,0,.28);border-radius:3px;display:flex;align-items:center;justify-content:center;font:9.5px ui-monospace,monospace;color:rgba(0,0,0,.45);text-align:center;flex:none}
+.drop{border:1.5px dashed var(--a);border-radius:4px;background:oklch(.6 .16 42/.07);flex:none}
+.bub{border:1.5px solid #2a2a2a;border-radius:5px 5px 1px 5px;padding:6px 8px;background:#f4f2ee}
+.note{font:12px 'Patrick Hand',cursive;color:var(--a);line-height:1.25}
+.sec{padding:7px 9px;display:flex;flex-direction:column;gap:7px;min-height:0}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:8px;flex:none}
+.col{display:flex;flex-direction:column;gap:7px;min-height:0}
+.row{display:flex;align-items:center;gap:7px}
+.vr{border-right:1.5px dashed rgba(0,0,0,.32)}
+.hr{border-bottom:1.5px dashed rgba(0,0,0,.32)}
+.sub{display:flex;gap:26px}
+.subcap{font:11px 'Patrick Hand',cursive;color:rgba(0,0,0,.55);margin:0 0 6px}
+.tick{width:5px;border-radius:2px;background:rgba(0,0,0,.18);flex:none}
+</style></helmet>
+
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Four structures for chat + summarization + reorderable sources</span></div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Two-pane · summary lives inline in the transcript, sources are a rail you drag</div>
+<div class="dv-card wf" style="width:748px;padding:14px">
+<div class="frm" style="height:472px">
+<div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span style="margin-left:6px">thread · Q3 filings research</span></div>
+<div style="flex:1;display:flex;min-height:0">
+<div class="sec vr" style="width:62%">
+<div class="hd"><span class="lbl">conversation · 51 turns</span><span class="mono">context 78%</span></div>
+<div class="col" style="flex:1;overflow:hidden">
+<div class="row" style="align-items:flex-start"><span class="hatch" style="width:20px;height:20px">A</span><div class="col" style="flex:1;gap:5px"><div class="ln" style="width:92%"></div><div class="ln" style="width:74%"></div></div></div>
+
+<div class="card" style="flex-direction:column;gap:6px;border-left:4px solid var(--a);background:#fbfaf8">
+  <div class="hd"><span class="lbl" style="color:var(--a)">summary of turns 1–47</span><div class="row" style="gap:5px"><span class="mono">collapse</span><span class="btn" style="padding:1px 6px;font-size:11px">edit</span></div></div>
+  <div class="col" style="gap:6px">
+    <div class="row" style="align-items:flex-start;gap:6px"><span class="grip">⠿</span><div class="col" style="flex:1;gap:4px"><div class="row" style="gap:5px"><div class="ln" style="width:70%"></div><span class="chip">1</span><span class="chip">4</span></div><div class="ln" style="width:48%"></div></div></div>
+    <div class="row" style="align-items:flex-start;gap:6px"><span class="grip">⠿</span><div class="col" style="flex:1;gap:4px"><div class="row" style="gap:5px"><div class="ln" style="width:82%"></div><span class="chip">2</span></div><div class="ln" style="width:36%"></div></div></div>
+    <div class="row" style="align-items:flex-start;gap:6px"><span class="grip">⠿</span><div class="col" style="flex:1;gap:4px"><div class="row" style="gap:5px"><div class="ln" style="width:60%"></div><span class="chip">7</span><span class="chip">9</span></div></div></div>
+  </div>
+  <div class="mono">3 of 6 points shown · drag ⠿ to reorder · 47 turns hidden behind this card</div>
+</div>
+
+<div class="row" style="justify-content:flex-end"><div class="bub" style="width:58%"><div class="ln" style="width:88%;margin-bottom:5px"></div><div class="ln" style="width:52%"></div></div></div>
+<div class="row" style="align-items:flex-start"><span class="hatch" style="width:20px;height:20px">A</span><div class="col" style="flex:1;gap:5px"><div class="ln" style="width:96%"></div><div class="row" style="gap:5px"><div class="ln" style="width:56%"></div><span class="chip">4</span><span class="chip">11</span></div><div class="ln" style="width:70%"></div></div></div>
+</div>
+<div class="card" style="align-items:center;flex:none"><div class="ln" style="width:62%"></div><span style="flex:1"></span><span class="mono">↑</span></div>
+</div>
+
+<div class="sec" style="width:38%;background:#fcfbf9">
+<div class="hd"><span class="lbl">sources · 12</span><span class="mono">order: manual ▾</span></div>
+<div class="col" style="flex:1;overflow:hidden">
+  <div class="card" style="align-items:flex-start"><span class="grip">⠿</span><div class="col" style="flex:1;gap:4px"><div class="row" style="gap:5px"><span class="chip">1</span><div class="ln" style="width:64%"></div></div><div class="mono">sec.gov · 2026-04-11 · pp.3–5</div><div class="ln" style="width:92%"></div><div class="ln" style="width:70%"></div><div class="mono" style="color:var(--a)">cited in 2 claims</div></div></div>
+  <div class="card" style="align-items:flex-start;transform:rotate(-1.2deg);box-shadow:3px 4px 0 rgba(0,0,0,.15)"><span class="grip" style="color:var(--a)">⠿</span><div class="col" style="flex:1;gap:4px"><div class="row" style="gap:5px"><span class="chip">2</span><div class="ln" style="width:58%"></div></div><div class="mono">dragging…</div></div></div>
+  <div class="drop" style="height:16px"></div>
+  <div class="card" style="align-items:flex-start"><span class="grip">⠿</span><div class="col" style="flex:1;gap:4px"><div class="row" style="gap:5px"><span class="chip">4</span><div class="ln" style="width:72%"></div></div><div class="mono">transcript · turn 22</div><div class="ln" style="width:84%"></div></div></div>
+  <div class="card" style="align-items:flex-start;opacity:.55"><span class="grip">⠿</span><div class="col" style="flex:1;gap:4px"><div class="row" style="gap:5px"><span class="chip">7</span><div class="ln" style="width:50%"></div></div><div class="mono">web · unverified</div></div></div>
+</div>
+<div class="row" style="flex:none;gap:6px"><span class="btn" style="flex:1;text-align:center">apply order to summary</span></div>
+</div>
+</div>
+</div>
+<p class="note" style="margin:11px 0 0">↳ one surface. Summary is a first-class message you can reorder in place; the rail is the only new furniture.</p>
+<div class="sub" style="margin-top:16px">
+<div style="width:344px">
+<p class="subcap">B · summarizing / long-context handoff (modal over chat)</p>
+<div class="frm" style="height:236px">
+<div class="bar"><span class="mono">compacting context</span></div>
+<div class="sec" style="flex:1">
+  <div class="h">Turns 1–47 → 1 summary card</div>
+  <div class="row" style="gap:2px;align-items:flex-end;height:34px">
+    <span class="tick" style="height:60%"></span><span class="tick" style="height:80%"></span><span class="tick" style="height:40%"></span><span class="tick" style="height:100%"></span><span class="tick" style="height:55%"></span><span class="tick" style="height:70%"></span><span class="tick" style="height:35%"></span><span class="tick" style="height:90%"></span><span class="tick" style="height:50%"></span><span class="tick" style="height:65%"></span>
+    <span class="mono" style="margin:0 6px">→</span><span class="hatch" style="width:52px;height:30px">summary</span>
+  </div>
+  <div class="col" style="gap:5px">
+    <div class="row"><span class="mono">☑</span><div class="ln" style="width:60%"></div><span class="mono">keep verbatim</span></div>
+    <div class="row"><span class="mono">☑</span><div class="ln" style="width:44%"></div><span class="mono">keep sources</span></div>
+    <div class="row" style="opacity:.5"><span class="mono">☐</span><div class="ln" style="width:52%"></div><span class="mono">drop</span></div>
+  </div>
+  <div class="row" style="margin-top:auto;gap:7px"><span class="btn">review before applying</span><span class="btn" style="border-color:var(--a);color:var(--a)">apply</span></div>
+</div>
+</div>
+</div>
+<div style="width:344px">
+<p class="subcap">C · citation drill-down (rail expands over chat)</p>
+<div class="frm" style="height:236px">
+<div class="bar"><span class="mono">← back to sources</span></div>
+<div style="flex:1;display:flex;min-height:0">
+  <div class="sec" style="width:56%">
+    <div class="row" style="gap:5px"><span class="chip">4</span><div class="ln" style="width:60%"></div></div>
+    <div class="hatch" style="flex:1;padding:6px;align-items:stretch;flex-direction:column;justify-content:flex-start;gap:5px"><div class="ln" style="width:90%"></div><div class="ln" style="width:100%;background:oklch(.6 .16 42/.35);height:8px"></div><div class="ln" style="width:100%;background:oklch(.6 .16 42/.35);height:8px"></div><div class="ln" style="width:74%"></div></div>
+    <div class="row"><span class="mono">match 2 of 5</span><span style="flex:1"></span><span class="mono">‹ ›</span></div>
+  </div>
+  <div class="sec vr" style="width:44%;order:-1;background:#fcfbf9">
+    <span class="lbl">used in</span>
+    <div class="card" style="flex-direction:column;gap:4px"><div class="ln" style="width:80%"></div><div class="mono">claim 2 · summary</div></div>
+    <div class="card" style="flex-direction:column;gap:4px"><div class="ln" style="width:66%"></div><div class="mono">turn 49 · answer</div></div>
+    <span class="btn" style="margin-top:auto;text-align:center">remove citation</span>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1b">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Three-pane · a workspace column you compose by dragging claim+evidence cards</div>
+<div class="dv-card wf" style="width:748px;padding:14px">
+<div class="frm" style="height:472px">
+<div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span style="margin-left:6px">workspace · Q3 filings</span><span style="flex:1"></span><span>chat · sources · draft</span></div>
+<div style="flex:1;display:flex;min-height:0">
+<div class="sec vr" style="width:118px;background:#faf9f7">
+  <span class="lbl">threads</span>
+  <div class="col" style="gap:5px">
+    <div class="card" style="padding:4px 6px;border-color:var(--a)"><div class="ln" style="width:80%"></div></div>
+    <div class="card" style="padding:4px 6px"><div class="ln" style="width:60%"></div></div>
+    <div class="card" style="padding:4px 6px"><div class="ln" style="width:70%"></div></div>
+  </div>
+  <span class="lbl" style="margin-top:8px">summaries</span>
+  <div class="col" style="gap:5px">
+    <div class="card" style="padding:4px 6px"><div class="ln" style="width:66%"></div></div>
+    <div class="card" style="padding:4px 6px"><div class="ln" style="width:52%"></div></div>
+  </div>
+</div>
+<div class="sec vr" style="flex:1">
+  <div class="hd"><span class="lbl">conversation</span><span class="mono">51 turns · summarized ×2</span></div>
+  <div class="col" style="flex:1;overflow:hidden">
+    <div class="row" style="gap:6px;align-items:center"><div class="hr" style="flex:1"></div><span class="mono">turns 1–47 summarized ▾</span><div class="hr" style="flex:1"></div></div>
+    <div class="row" style="align-items:flex-start"><span class="hatch" style="width:18px;height:18px">A</span><div class="col" style="flex:1;gap:5px"><div class="ln" style="width:94%"></div><div class="row" style="gap:5px"><div class="ln" style="width:48%"></div><span class="chip">1</span></div></div></div>
+    <div class="row" style="justify-content:flex-end"><div class="bub" style="width:70%"><div class="ln" style="width:82%"></div></div></div>
+    <div class="row" style="align-items:flex-start"><span class="hatch" style="width:18px;height:18px">A</span><div class="col" style="flex:1;gap:5px"><div class="ln" style="width:98%"></div><div class="row" style="gap:5px"><div class="ln" style="width:62%"></div><span class="chip">4</span><span class="chip">6</span></div><div class="ln" style="width:80%"></div>
+      <div class="row" style="gap:5px;margin-top:2px"><span class="btn" style="padding:1px 6px;font-size:11px;border-color:var(--a);color:var(--a)">→ send to draft</span><span class="btn" style="padding:1px 6px;font-size:11px">sources</span></div>
+    </div></div>
+  </div>
+  <div class="card" style="align-items:center;flex:none"><div class="ln" style="width:55%"></div><span style="flex:1"></span><span class="mono">↑</span></div>
+</div>
+<div class="sec" style="width:270px;background:#fcfbf9">
+  <div class="hd"><span class="lbl">draft · 6 blocks</span><span class="mono">⟲ undo</span></div>
+  <div class="col" style="flex:1;overflow:hidden">
+    <div class="card" style="align-items:flex-start"><span class="grip">⠿</span><div class="col" style="flex:1;gap:4px"><span class="mono">claim 1</span><div class="ln" style="width:88%"></div><div class="card" style="padding:4px 6px;border-style:dashed;flex-direction:column;gap:3px"><div class="ln" style="width:92%"></div><div class="row" style="gap:4px"><span class="chip">1</span><span class="mono">sec.gov p.4</span></div></div></div></div>
+    <div class="drop" style="height:44px;display:flex;align-items:center;justify-content:center"><span class="mono" style="color:var(--a)">drop here — becomes claim 2</span></div>
+    <div class="card" style="align-items:flex-start;transform:rotate(1deg);box-shadow:3px 4px 0 rgba(0,0,0,.14)"><span class="grip" style="color:var(--a)">⠿</span><div class="col" style="flex:1;gap:4px"><span class="mono">dragging from chat</span><div class="ln" style="width:70%"></div></div></div>
+    <div class="card" style="align-items:flex-start"><span class="grip">⠿</span><div class="col" style="flex:1;gap:4px"><span class="mono">claim 3 · 2 evidence</span><div class="ln" style="width:76%"></div><div class="row" style="gap:4px"><span class="chip">4</span><span class="chip">6</span></div></div></div>
+    <div class="card" style="align-items:flex-start;opacity:.5"><span class="grip">⠿</span><div class="col" style="flex:1;gap:4px"><span class="mono">claim 4 · no evidence ⚠</span><div class="ln" style="width:58%"></div></div></div>
+  </div>
+  <div class="row" style="flex:none;gap:6px"><span class="btn" style="flex:1;text-align:center">summarize draft</span><span class="btn">export</span></div>
+</div>
+</div>
+</div>
+<p class="note" style="margin:11px 0 0">↳ conversation and artifact stay separate. Reordering edits the deliverable, not the chat history.</p>
+<div class="sub" style="margin-top:16px">
+<div style="width:344px">
+<p class="subcap">B · summarization as a reviewable step in the draft pane</p>
+<div class="frm" style="height:236px">
+<div class="bar"><span class="mono">draft · summarizing 6 blocks</span></div>
+<div style="flex:1;display:flex;min-height:0">
+  <div class="sec vr" style="width:46%">
+    <span class="lbl">in</span>
+    <div class="col" style="gap:5px">
+      <div class="card" style="padding:4px 6px"><div class="ln" style="width:80%"></div></div>
+      <div class="card" style="padding:4px 6px"><div class="ln" style="width:64%"></div></div>
+      <div class="card" style="padding:4px 6px"><div class="ln" style="width:74%"></div></div>
+      <div class="card" style="padding:4px 6px;opacity:.45"><div class="ln" style="width:56%"></div></div>
+    </div>
+    <span class="mono" style="margin-top:auto">3 of 4 included</span>
+  </div>
+  <div class="sec" style="flex:1">
+    <div class="hd"><span class="lbl">out</span><span class="mono">length ▁▃▅ ▾</span></div>
+    <div class="card" style="flex-direction:column;gap:5px;flex:1;border-color:var(--a)">
+      <div class="ln" style="width:94%"></div><div class="ln" style="width:88%"></div>
+      <div class="row" style="gap:4px"><div class="ln" style="width:52%"></div><span class="chip">1</span><span class="chip">4</span></div>
+      <div class="mono" style="margin-top:auto;color:var(--a)">every sentence keeps its source</div>
+    </div>
+    <div class="row" style="gap:6px"><span class="btn">regenerate</span><span class="btn" style="border-color:var(--a);color:var(--a)">accept</span></div>
+  </div>
+</div>
+</div>
+</div>
+<div style="width:344px">
+<p class="subcap">C · citation drill-down (third pane swaps to source)</p>
+<div class="frm" style="height:236px">
+<div class="bar"><span class="mono">source 4 of 12 · ‹ ›</span></div>
+<div class="sec" style="flex:1">
+  <div class="row" style="gap:5px"><span class="chip">4</span><div class="ln" style="width:56%"></div><span style="flex:1"></span><span class="mono">✕</span></div>
+  <div class="mono">annual-report.pdf · p.14 · retrieved 2026-08-02</div>
+  <div class="hatch" style="flex:1;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:5px;padding:7px">
+    <div class="ln" style="width:88%"></div>
+    <div style="border-left:3px solid var(--a);padding-left:6px;display:flex;flex-direction:column;gap:4px"><div class="ln" style="width:96%;background:oklch(.6 .16 42/.35);height:8px"></div><div class="ln" style="width:80%;background:oklch(.6 .16 42/.35);height:8px"></div></div>
+    <div class="ln" style="width:70%"></div>
+  </div>
+  <div class="row" style="gap:6px"><span class="btn">quote into draft</span><span class="btn">open full doc</span><span class="mono" style="margin-left:auto">2 claims use this</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1c">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Evidence board primary · chat is a drawer; the board is the document</div>
+<div class="dv-card wf" style="width:748px;padding:14px">
+<div class="frm" style="height:472px">
+<div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span style="margin-left:6px">board · 12 sources · 6 claims</span><span style="flex:1"></span><span>⌘K</span></div>
+<div class="sec hr" style="flex:none;background:#faf9f7">
+  <div class="hd"><span class="lbl">summary — reads in board order</span><div class="row" style="gap:6px"><span class="mono">auto-updates</span><span class="btn" style="padding:1px 6px;font-size:11px">regenerate</span></div></div>
+  <div class="row" style="gap:6px;align-items:flex-start">
+    <div class="col" style="flex:1;gap:4px"><div class="ln" style="width:96%"></div><div class="row" style="gap:5px"><div class="ln" style="width:70%"></div><span class="chip">1</span><span class="chip">3</span><span class="chip">4</span></div></div>
+    <span class="hatch" style="width:64px;height:30px">outline</span>
+  </div>
+</div>
+<div style="flex:1;display:flex;min-height:0">
+  <div class="sec" style="flex:1">
+    <div class="hd"><span class="lbl">evidence board · drag to order</span><span class="mono">3 selected · group ▾</span></div>
+    <div style="flex:1;display:grid;grid-template-columns:1fr 1fr;gap:8px;overflow:hidden">
+      <div class="card" style="flex-direction:column;gap:5px;border-color:var(--a)"><div class="row" style="gap:5px"><span class="grip">⠿</span><span class="chip">1</span><div class="ln" style="width:52%"></div></div><div class="ln" style="width:92%"></div><div class="ln" style="width:66%"></div><div class="mono">sec.gov · p.4</div></div>
+      <div class="card" style="flex-direction:column;gap:5px"><div class="row" style="gap:5px"><span class="grip">⠿</span><span class="chip">2</span><div class="ln" style="width:60%"></div></div><div class="ln" style="width:84%"></div><div class="mono">transcript · turn 22</div></div>
+      <div class="drop" style="display:flex;align-items:center;justify-content:center"><span class="mono" style="color:var(--a)">position 3</span></div>
+      <div class="card" style="flex-direction:column;gap:5px;transform:rotate(-1.5deg);box-shadow:4px 5px 0 rgba(0,0,0,.14)"><div class="row" style="gap:5px"><span class="grip" style="color:var(--a)">⠿</span><span class="chip">4</span><div class="ln" style="width:48%"></div></div><div class="mono">lifted</div></div>
+      <div class="card" style="flex-direction:column;gap:5px"><div class="row" style="gap:5px"><span class="grip">⠿</span><span class="chip">5</span><div class="ln" style="width:56%"></div></div><div class="ln" style="width:78%"></div><div class="mono" style="color:var(--a)">⚠ conflicts with 2</div></div>
+      <div class="card" style="flex-direction:column;gap:5px;opacity:.5"><div class="row" style="gap:5px"><span class="grip">⠿</span><span class="chip">6</span><div class="ln" style="width:44%"></div></div><div class="mono">unused — parked</div></div>
+    </div>
+  </div>
+  <div class="sec vr" style="width:250px;order:-1;background:#fcfbf9">
+    <div class="hd"><span class="lbl">chat drawer</span><span class="mono">⇤ collapse</span></div>
+    <div class="col" style="flex:1;overflow:hidden">
+      <div class="row" style="gap:5px;align-items:center"><div class="hr" style="flex:1"></div><span class="mono">47 turns summarized</span><div class="hr" style="flex:1"></div></div>
+      <div class="row" style="justify-content:flex-end"><div class="bub" style="width:78%"><div class="ln" style="width:86%"></div></div></div>
+      <div class="col" style="gap:5px"><div class="ln" style="width:94%"></div><div class="row" style="gap:5px"><div class="ln" style="width:52%"></div><span class="chip">4</span></div><div class="ln" style="width:74%"></div></div>
+      <div class="card" style="flex-direction:column;gap:4px;border-style:dashed"><span class="mono">3 new cards added to board</span><div class="row" style="gap:4px"><span class="chip">4</span><span class="chip">5</span><span class="chip">6</span></div></div>
+    </div>
+    <div class="card" style="align-items:center;flex:none"><div class="ln" style="width:58%"></div><span style="flex:1"></span><span class="mono">↑</span></div>
+  </div>
+</div>
+</div>
+<p class="note" style="margin:11px 0 0">↳ chat is a tool for filling the board. Best if the real output is a sourced document, not an answer.</p>
+<div class="sub" style="margin-top:16px">
+<div style="width:344px">
+<p class="subcap">B · summarizing: retrieval + compaction shown on the board</p>
+<div class="frm" style="height:236px">
+<div class="bar"><span class="mono">working · 2 of 3 steps</span></div>
+<div class="sec" style="flex:1">
+  <div class="col" style="gap:6px">
+    <div class="row" style="gap:6px"><span class="mono">✓</span><div class="ln" style="width:40%"></div><span class="mono" style="margin-left:auto">47 turns read</span></div>
+    <div class="row" style="gap:6px"><span class="mono" style="color:var(--a)">◐</span><div class="ln" style="width:52%"></div><span class="mono" style="margin-left:auto">9 sources kept</span></div>
+    <div class="row" style="gap:6px;opacity:.45"><span class="mono">○</span><div class="ln" style="width:34%"></div><span class="mono" style="margin-left:auto">write summary</span></div>
+  </div>
+  <div class="hatch" style="flex:1;flex-direction:column;gap:5px;padding:7px;align-items:stretch;justify-content:center">
+    <div class="row" style="gap:5px"><span class="chip">1</span><span class="chip">2</span><span class="chip">4</span><span class="chip">5</span><span class="mono">→ kept</span></div>
+    <div class="row" style="gap:5px;opacity:.45"><span class="chip">8</span><span class="chip">9</span><span class="mono">→ dropped, tap to restore</span></div>
+  </div>
+  <div class="row" style="gap:6px"><span class="btn">stop</span><span class="btn">watch as it writes</span></div>
+</div>
+</div>
+</div>
+<div style="width:344px">
+<p class="subcap">C · citation drill-down (card flips to full source)</p>
+<div class="frm" style="height:236px">
+<div class="bar"><span class="mono">card 4 ⇄ source</span></div>
+<div class="sec" style="flex:1">
+  <div class="row" style="gap:5px"><span class="chip">4</span><div class="ln" style="width:50%"></div><span style="flex:1"></span><span class="mono">⇄ flip back</span></div>
+  <div style="flex:1;display:flex;gap:7px;min-height:0">
+    <div class="hatch" style="width:38%;flex-direction:column;gap:4px;padding:5px;align-items:stretch"><div class="ln" style="width:90%;height:4px"></div><div class="ln" style="width:100%;height:4px;background:oklch(.6 .16 42/.4)"></div><div class="ln" style="width:80%;height:4px"></div><div class="ln" style="width:95%;height:4px"></div><span class="mono" style="margin-top:auto">page thumb</span></div>
+    <div class="col" style="flex:1;gap:5px">
+      <div class="card" style="flex-direction:column;gap:4px;border-left:3px solid var(--a)"><div class="ln" style="width:94%"></div><div class="ln" style="width:72%"></div><div class="mono">quoted passage · p.14</div></div>
+      <div class="mono">who added it: assistant, turn 31</div>
+      <div class="mono">also supports: claim 1, claim 5</div>
+      <span class="btn" style="margin-top:auto;text-align:center">park this card</span>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="dv-opt" id="1d">
+<div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a>Single column · footnote gutter for sources, summary opens as a horizontal reorder strip</div>
+<div class="dv-card wf" style="width:748px;padding:14px">
+<div class="frm" style="height:472px">
+<div class="bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span style="margin-left:6px">reading view · Q3 filings</span></div>
+<div style="flex:1;display:flex;min-height:0">
+  <div class="sec vr" style="width:132px;background:#faf9f7">
+    <span class="lbl">gutter · sources</span>
+    <div class="col" style="gap:8px">
+      <div class="row" style="gap:5px;align-items:flex-start"><span class="chip">1</span><div class="col" style="gap:3px;flex:1"><div class="ln" style="width:86%"></div><div class="mono">sec.gov</div></div></div>
+      <div class="row" style="gap:5px;align-items:flex-start"><span class="chip">2</span><div class="col" style="gap:3px;flex:1"><div class="ln" style="width:70%"></div><div class="mono">turn 22</div></div></div>
+      <div class="row" style="gap:5px;align-items:flex-start;padding:4px;border:1.5px solid var(--a);border-radius:4px"><span class="chip">4</span><div class="col" style="gap:3px;flex:1"><div class="ln" style="width:80%"></div><div class="mono">hovered in text</div></div></div>
+      <div class="row" style="gap:5px;align-items:flex-start;opacity:.5"><span class="chip">7</span><div class="col" style="gap:3px;flex:1"><div class="ln" style="width:64%"></div><div class="mono">weak match</div></div></div>
+    </div>
+    <span class="mono" style="margin-top:auto">aligned to the line that cites it</span>
+  </div>
+  <div class="sec" style="flex:1">
+    <div class="hd"><span class="lbl">transcript</span><span class="mono">jump to: summary ▾</span></div>
+    <div class="col" style="flex:1;overflow:hidden;gap:8px">
+      <div class="col" style="gap:5px"><div class="ln" style="width:96%"></div><div class="row" style="gap:5px"><div class="ln" style="width:60%"></div><span class="chip">1</span></div></div>
+      <div class="col" style="gap:6px;border:1.5px solid #2a2a2a;border-radius:4px;padding:7px;background:#fbfaf8">
+        <div class="hd"><span class="lbl" style="color:var(--a)">summary strip · turns 1–47</span><span class="mono">drag cards ↔ · ✕ close</span></div>
+        <div class="row" style="gap:7px;align-items:stretch;overflow:hidden">
+          <div class="card" style="width:96px;flex-direction:column;gap:4px"><div class="row" style="gap:4px"><span class="grip">⠿</span><span class="mono">1</span></div><div class="ln" style="width:88%"></div><div class="ln" style="width:60%"></div><span class="chip" style="align-self:flex-start">1</span></div>
+          <div class="card" style="width:96px;flex-direction:column;gap:4px;transform:rotate(1.5deg);box-shadow:3px 4px 0 rgba(0,0,0,.14)"><div class="row" style="gap:4px"><span class="grip" style="color:var(--a)">⠿</span><span class="mono">2</span></div><div class="ln" style="width:74%"></div></div>
+          <div class="drop" style="width:26px"></div>
+          <div class="card" style="width:96px;flex-direction:column;gap:4px"><div class="row" style="gap:4px"><span class="grip">⠿</span><span class="mono">4</span></div><div class="ln" style="width:80%"></div><div class="row" style="gap:4px"><span class="chip">4</span><span class="chip">7</span></div></div>
+          <div class="hatch" style="width:44px">+2</div>
+        </div>
+        <div class="row" style="gap:6px"><span class="mono">order changes how the summary reads</span><span class="btn" style="margin-left:auto;padding:1px 6px;font-size:11px">rewrite in this order</span></div>
+      </div>
+      <div class="row" style="justify-content:flex-end"><div class="bub" style="width:56%"><div class="ln" style="width:84%"></div></div></div>
+      <div class="col" style="gap:5px"><div class="ln" style="width:98%"></div><div class="row" style="gap:5px"><div class="ln" style="width:64%"></div><span class="chip" style="border-width:2px">4</span><span class="mono">← hover lights the gutter</span></div></div>
+    </div>
+    <div class="card" style="align-items:center;flex:none"><div class="ln" style="width:60%"></div><span style="flex:1"></span><span class="mono">↑</span></div>
+  </div>
+</div>
+</div>
+<p class="note" style="margin:11px 0 0">↳ lightest structure. Sources never take a pane; reordering is a temporary mode, not a permanent workspace.</p>
+<div class="sub" style="margin-top:16px">
+<div style="width:344px">
+<p class="subcap">B · summarizing inline, streaming into the transcript</p>
+<div class="frm" style="height:236px">
+<div class="bar"><span class="mono">writing summary…</span></div>
+<div class="sec" style="flex:1">
+  <div class="row" style="gap:6px"><span class="mono" style="color:var(--a)">◐ summarizing turns 1–47</span><span class="btn" style="margin-left:auto;padding:1px 6px;font-size:11px">stop</span></div>
+  <div class="col" style="gap:6px;border:1.5px dashed var(--a);border-radius:4px;padding:7px;flex:1">
+    <div class="ln" style="width:94%"></div>
+    <div class="row" style="gap:5px"><div class="ln" style="width:56%"></div><span class="chip">1</span></div>
+    <div class="ln" style="width:88%"></div>
+    <div class="row" style="gap:5px"><div class="ln" style="width:30%"></div><span style="width:6px;height:12px;background:var(--a)"></span></div>
+    <div class="mono" style="margin-top:auto">collapsing 47 turns · 9 of 12 sources carried forward</div>
+  </div>
+  <div class="row" style="gap:6px"><span class="mono">what got dropped?</span><span class="mono" style="margin-left:auto">keep original turns ☑</span></div>
+</div>
+</div>
+</div>
+<div style="width:344px">
+<p class="subcap">C · citation drill-down (gutter note expands in place)</p>
+<div class="frm" style="height:236px">
+<div class="bar"><span class="mono">source 4 · expanded in gutter</span></div>
+<div style="flex:1;display:flex;min-height:0">
+  <div class="sec vr" style="width:60%;background:#faf9f7">
+    <div class="row" style="gap:5px"><span class="chip">4</span><div class="ln" style="width:56%"></div><span class="mono" style="margin-left:auto">✕</span></div>
+    <div class="mono">annual-report.pdf · p.14</div>
+    <div class="hatch" style="flex:1;flex-direction:column;gap:4px;padding:6px;align-items:stretch;justify-content:flex-start"><div class="ln" style="width:92%"></div><div class="ln" style="width:100%;background:oklch(.6 .16 42/.35);height:8px"></div><div class="ln" style="width:66%;background:oklch(.6 .16 42/.35);height:8px"></div><div class="ln" style="width:84%"></div></div>
+    <div class="row" style="gap:6px"><span class="btn" style="padding:1px 6px;font-size:11px">open doc</span><span class="btn" style="padding:1px 6px;font-size:11px">next use ›</span></div>
+  </div>
+  <div class="sec" style="flex:1">
+    <span class="lbl">transcript stays put</span>
+    <div class="col" style="gap:5px;opacity:.5"><div class="ln" style="width:92%"></div><div class="ln" style="width:78%"></div></div>
+    <div class="col" style="gap:5px;border-left:3px solid var(--a);padding-left:6px"><div class="ln" style="width:88%"></div><div class="row" style="gap:5px"><div class="ln" style="width:50%"></div><span class="chip">4</span></div></div>
+    <div class="col" style="gap:5px;opacity:.5"><div class="ln" style="width:84%"></div><div class="ln" style="width:60%"></div></div>
+    <span class="mono" style="margin-top:auto">citing line highlighted, not scrolled</span>
+  </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "take <a class="dv-oid" href="#1b">1b</a> further — show the reorder interaction step by step" · "combine <a class="dv-oid" href="#1a">1a</a>'s inline summary with <a class="dv-oid" href="#1c">1c</a>'s board" · "add the source-conflict and export screens" · "new directions"</p>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}"></script>
+</body>
+</html>
